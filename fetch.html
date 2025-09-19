@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fetch and Display</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 0.5rem 0; border-bottom: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+
+  <h1>Post List</h1>
+  <ul id="postList"></ul>
+
+  <script>
+    // Select the DOM element to render the list
+const postList = document.getElementById('postList');
+
+// Define the API endpoint
+const API_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+// Fetch data and render it
+async function fetchAndDisplayPosts() {
+  try {
+    const response = await fetch(API_URL);
+    if (!response.ok) throw new Error('Network response was not ok');
+
+    const posts = await response.json();
+
+    // Render each post
+    posts.slice(0, 10).forEach(post => {
+      const li = document.createElement('li');
+      li.textContent = post.title;
+      postList.appendChild(li);
+    });
+
+  } catch (error) {
+    postList.innerHTML = `<li>Error: ${error.message}</li>`;
+  }
+}
+
+// Initialize the workflow
+fetchAndDisplayPosts();
+
+  </script>
+</body>
+</html>
