@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Validation form</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  background-color: #110606;
+  padding: 50px;
+}
+
+.form-container {
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #4a90e2;
+  outline: none;
+}
+
+input.invalid {
+  border-color: #e74c3c;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 5px;
+  display: none;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3a78c2;
+}
+</style>
+</head>
+<body>
+  <div class="form-container">
+    <form id="signupForm" novalidate>
+      <h2>Login form</h2>
+      
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+        <small class="error-message"></small>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+        <small class="error-message"></small>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password (min 6 chars)</label>
+        <input type="password" id="password" name="password" required>
+        <small class="error-message"></small>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+  e.preventDefault(); // Prevent form submission
+
+  let isValid = true;
+
+  const name = document.getElementById('name');
+  const email = document.getElementById('email');
+  const password = document.getElementById('password');
+
+  // Reset error states
+  clearErrors([name, email, password]);
+
+  // Name validation
+  if (name.value.trim() === '') {
+    showError(name, 'Name is required');
+    isValid = false;
+  }
+
+  // Email validation
+  if (!validateEmail(email.value)) {
+    showError(email, 'Invalid email address');
+    isValid = false;
+  }
+
+  // Password validation
+  if (password.value.length < 6) {
+    showError(password, 'Password must be at least 6 characters');
+    isValid = false;
+  }
+
+  if (isValid) {
+    alert('Form submitted successfully!');
+    // Optionally submit the form using AJAX or reset it
+    // this.submit(); 
+  }
+});
+
+function showError(input, message) {
+  input.classList.add('invalid');
+  const error = input.nextElementSibling;
+  error.innerText = message;
+  error.style.display = 'block';
+}
+
+function clearErrors(inputs) {
+  inputs.forEach(input => {
+    input.classList.remove('invalid');
+    const error = input.nextElementSibling;
+    error.innerText = '';
+    error.style.display = 'none';
+  });
+}
+
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.toLowerCase());
+}
+
+  </script>
+</body>
+</html>
